@@ -4,6 +4,11 @@ import json
 import pprint
 import requests
 import time
+import os
+
+
+def print_ts(message):
+    print "[%s] %s"%(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), message)
 
 
 def get_weather():
@@ -36,28 +41,52 @@ def get_weather():
     # return weather_data
 
 
-itchat.auto_login()
+def send_weather():
 
-# friends = itchat.search_friends(name='butterfly')
-friends = itchat.search_friends(name='sxw2251')
+    itchat.auto_login()
 
-username = friends[0]['UserName']
-print username
-weather_data = get_weather()
+    friends = itchat.search_friends(name='butterfly')
+    # friends = itchat.search_friends(name='sxw2251')
 
-itchat.send('Hello, ' + u'我是机器人超，现在开始播报天气', toUserName=username)
-time.sleep(3)
-itchat.send(u'您所处的位置：北京', toUserName=username)
-time.sleep(3)
-itchat.send(u'今天的日期：' + weather_data['date'], toUserName=username)
-time.sleep(3)
-itchat.send(u'今天的天气：' + weather_data['weather'], toUserName=username)
-time.sleep(3)
-itchat.send(u'今天的风力：' + weather_data['wind'], toUserName=username)
-time.sleep(3)
-itchat.send(u'今天的温度：' + weather_data['temperature'], toUserName=username)
-time.sleep(3)
-itchat.send(u'祝您生活愉快!', toUserName=username)
+    username = friends[0]['UserName']
+    print username
+    weather_data = get_weather()
+
+    itchat.send('Hello, ' + u'我是机器人超，现在开始播报天气', toUserName=username)
+    time.sleep(3)
+    itchat.send(u'您所处的位置：北京', toUserName=username)
+    time.sleep(3)
+    itchat.send(u'今天的日期：' + weather_data['date'], toUserName=username)
+    time.sleep(3)
+    itchat.send(u'今天的天气：' + weather_data['weather'], toUserName=username)
+    time.sleep(3)
+    itchat.send(u'今天的风力：' + weather_data['wind'], toUserName=username)
+    time.sleep(3)
+    itchat.send(u'今天的温度：' + weather_data['temperature'], toUserName=username)
+    time.sleep(3)
+    itchat.send(u'祝您生活愉快!', toUserName=username)
 
 
+def run(interval):
+    # print_ts("-"*100)
+    # print_ts("Command %s"%command)
+    # print_ts("Starting every %s seconds."%interval)
+    # print_ts("-"*100)
+    while True:
+        try:
+            # sleep for the remaining seconds of interval
+            time_remaining = interval-time.time() % interval
+            print_ts("Sleeping until %s (%s seconds)..."%((time.ctime(time.time()+time_remaining)), time_remaining))
+            time.sleep(time_remaining)
+            # print_ts("Starting command.")
+            # execute the command
+            # status = os.system(command)
+            send_weather()
+            # print_ts("-"*100)
+            # print_ts("Command status = %s."%status)
+        except Exception, e:
+            print e
 
+if __name__ == '__main__':
+    interval = 10
+    run(interval)
