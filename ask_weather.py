@@ -2,15 +2,62 @@
 import itchat
 import json
 import pprint
+import requests
+import time
+
+
+def get_weather():
+    key = 'IwKTtP7vQ5Mahn5dykDACKqKdzFUY2uT'
+    city = '北京'
+    url = 'http://api.map.baidu.com/telematics/v3/weather?location={}&output=json&ak={}'.format(city, key)
+    # url = 'http://api.map.baidu.com/telematics/v2/search?q={}&region={}&output=json&ak={}'.format('饭店', city, key)
+    App_secret = '7a9676bb8ceea89685eaeb9ec4c7fb4b'
+    AppID = 'wx92a5fb372a254be2'
+
+    # print(url)
+    response = requests.get(url)
+    weather_dict = response.json()
+    # pprint.pprint(weather_dict)
+    print(weather_dict['results'][0]['currentCity'])
+    weather_data = weather_dict['results'][0]['weather_data']
+    data = {}
+    data['date'] =weather_data[0]['date']
+    data['weather'] = weather_data[0]['weather']
+    data['wind'] = weather_data[0]['wind']
+    data['temperature'] = weather_data[0]['temperature']
+    # print data
+    return data
+
+    # for item in weather_data:
+    #     print(item['date'])
+    #     print(item['weather'])
+    #     print(item['wind'])
+    #     print(item['temperature'])
+    # return weather_data
+
 
 itchat.auto_login()
 
-# itchat.send('Hello, filehelper', toUserName='filehelper')
-friends = itchat.search_friends(name='butterfly')
-print type(friends)
-# friends = json.dumps(friends)
-pprint.pprint(friends)
-print type(friends)
+# friends = itchat.search_friends(name='butterfly')
+friends = itchat.search_friends(name='sxw2251')
+
 username = friends[0]['UserName']
 print username
-itchat.send('Hello,' + username, toUserName=username)
+weather_data = get_weather()
+
+itchat.send('Hello, ' + u'我是机器人超，现在开始播报天气', toUserName=username)
+time.sleep(3)
+itchat.send(u'您所处的位置：北京', toUserName=username)
+time.sleep(3)
+itchat.send(u'今天的日期：' + weather_data['date'], toUserName=username)
+time.sleep(3)
+itchat.send(u'今天的天气：' + weather_data['weather'], toUserName=username)
+time.sleep(3)
+itchat.send(u'今天的风力：' + weather_data['wind'], toUserName=username)
+time.sleep(3)
+itchat.send(u'今天的温度：' + weather_data['temperature'], toUserName=username)
+time.sleep(3)
+itchat.send(u'祝您生活愉快!', toUserName=username)
+
+
+

@@ -1,3 +1,4 @@
+# coding: utf-8
 import json
 import requests
 import pprint
@@ -16,6 +17,7 @@ weather_dict = response.json()
 # pprint.pprint(weather_dict)
 print(weather_dict['results'][0]['currentCity'])
 weather_data = weather_dict['results'][0]['weather_data']
+print weather_data
 for item in weather_data:
     print(item['date'])
     print(item['weather'])
