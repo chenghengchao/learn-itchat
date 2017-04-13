@@ -56,7 +56,7 @@ def send_weather():
 
     # itchat.auto_login()
 
-    friends = itchat.search_friends(name='R.D.I')
+    friends = itchat.search_friends(name='butterfly')
     # friends = itchat.search_friends(name='sxw2251')
 
     username = friends[0]['UserName']
