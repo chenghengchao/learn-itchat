@@ -17,7 +17,7 @@ from itchat.content import *
 
 
 def print_ts(message):
-    print "[%s] %s"%(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), message)
+    print("[%s] %s"%(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime()), message))
 
 
 def get_weather(city):
@@ -60,7 +60,7 @@ def send_weather():
     # friends = itchat.search_friends(name='sxw2251')
 
     username = friends[0]['UserName']
-    print username
+    print(username)
     weather_data = get_weather('北京')
 
     itchat.send('Hello, ' + u'我是机器人超，现在开始播报天气', toUserName=username)
